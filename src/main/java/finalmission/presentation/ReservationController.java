@@ -1,10 +1,10 @@
-package finalmission.controller;
+package finalmission.presentation;
 
-import finalmission.controller.dto.ReservationRequest;
-import finalmission.controller.dto.ReservationResponse;
-import finalmission.controller.dto.ReservationUpdateRequest;
+import finalmission.application.ReservationService;
 import finalmission.domain.reservation.entity.Reservation;
-import finalmission.domain.reservation.service.ReservationService;
+import finalmission.presentation.dto.ReservationRequest;
+import finalmission.presentation.dto.ReservationResponse;
+import finalmission.presentation.dto.ReservationUpdateRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,6 +34,7 @@ public class ReservationController {
                 request.date(),
                 request.time()
         );
+
         return ResponseEntity.status(HttpStatus.CREATED).body(ReservationResponse.from(reservation));
     }
 

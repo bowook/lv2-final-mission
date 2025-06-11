@@ -1,4 +1,4 @@
-package finalmission.controller.reservation;
+package finalmission.presentation.reservation;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;

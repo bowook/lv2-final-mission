@@ -1,13 +1,12 @@
-package finalmission.domain.reservation.service;
+package finalmission.application;
 
 import finalmission.domain.member.entity.Member;
 import finalmission.domain.member.exception.MemberNotFoundException;
+import finalmission.domain.member.repository.MemberRepository;
 import finalmission.domain.reservation.entity.Reservation;
 import finalmission.domain.reservation.exception.DuplicateReservationException;
 import finalmission.domain.reservation.exception.ReservationNotFoundException;
-import finalmission.infrastructure.member.JpaMemberRepository;
-import finalmission.infrastructure.openapi.HolidayApi;
-import finalmission.infrastructure.reservation.JpaReservationRepository;
+import finalmission.domain.reservation.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -19,9 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ReservationService {
 
-    private final JpaReservationRepository reservationRepository;
-    private final JpaMemberRepository memberRepository;
-    private final HolidayApi holidayApi;
+    private final ReservationRepository reservationRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Reservation create(
@@ -32,8 +30,9 @@ public class ReservationService {
             final LocalTime time) {
         final Member member = memberRepository.findByNameAndPhoneNumber(name, phoneNumber);
         final Reservation reservation = new Reservation(member, lesson, date, time);
+
         checkDuplicateReservation(lesson, date, time);
-        final String response = holidayApi.requestHoliday();
+
         final Reservation savedReservation = reservationRepository.save(reservation);
 
         return savedReservation;
@@ -68,12 +67,12 @@ public class ReservationService {
         return reservation;
     }
 
-    private Reservation checkReservationPresence(Long id) {
+    private Reservation checkReservationPresence(final Long id) {
         return reservationRepository.findById(id)
                 .orElseThrow(() -> new ReservationNotFoundException("일치하는 예약이 존재하지 않습니다."));
     }
 
-    private Member checkMemberPresence(Long id) {
+    private Member checkMemberPresence(final Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException("일치하는 회원이 존재하지 않습니다."));
     }

@@ -1,4 +1,4 @@
-package finalmission.controller.dto;
+package finalmission.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
