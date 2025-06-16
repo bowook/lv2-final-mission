@@ -17,6 +17,8 @@ import static org.hamcrest.Matchers.is;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ReservationControllerTest {
 
+    private String memberToken;
+
     private Map<String, Object> params;
 
     @BeforeEach
@@ -25,10 +27,15 @@ public class ReservationControllerTest {
         params = createReservationRequestJsonMap(
                 "우가",
                 "010-4874-3424",
-                "등 수업",
-                LocalDate.of(2025, 6, 10),
-                LocalTime.of(13, 50)
+                "하체운동",
+                LocalDate.of(2025, 6, 13),
+                LocalTime.of(14, 30)
         );
+
+        memberToken = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(Map.of("email", "wooga@email.com", "password", "password"))
+                .when().post("/login").getCookie("token");
     }
 
     @Test
@@ -97,6 +104,7 @@ public class ReservationControllerTest {
         // when
         RestAssured.given().log().all()
                 .pathParam("reservationId", reservationId)
+                .cookie("token", memberToken)
                 .when().delete("/reservations/{reservationId}")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
@@ -113,8 +121,8 @@ public class ReservationControllerTest {
     @Test
     void 자신의_예약_정보_수정_테스트() {
         final Map<String, Object> updateParams = updateReservationRequestJsonMap(
-                LocalDate.of(2025, 7, 10),
-                LocalTime.of(20, 20)
+                LocalDate.of(2025, 6, 12),
+                LocalTime.of(18, 0)
         );
         // given
         RestAssured.given().log().all()
@@ -127,14 +135,15 @@ public class ReservationControllerTest {
         // when & then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", memberToken)
                 .body(updateParams)
                 .pathParam("reservationId", 1)
                 .when().patch("/reservations/update/{reservationId}")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .body("id", is(1))
-                .body("date", is(LocalDate.of(2025, 7, 10).toString()))
-                .body("time", is(LocalTime.of(20, 20).toString()));
+                .body("date", is(LocalDate.of(2025, 6, 12).toString()))
+                .body("time", is(LocalTime.of(18, 0).toString()));
     }
 
     private Map<String, Object> updateReservationRequestJsonMap(

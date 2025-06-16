@@ -1,4 +1,4 @@
-package finalmission.presentation.dto;
+package finalmission.presentation.reservation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
