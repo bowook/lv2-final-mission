@@ -24,6 +24,12 @@ spring:
       ddl-auto: create-drop
     defer-datasource-initialization: true
 
+security:
+  jwt:
+    token:
+      secret-key: "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="
+      expire-length: 3600000
+
 openapi:
   public-holidays:
     base-url: "https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"
