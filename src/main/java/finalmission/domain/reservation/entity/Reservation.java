@@ -1,20 +1,20 @@
 package finalmission.domain.reservation.entity;
 
+import finalmission.domain.lesson.entity.Lesson;
 import finalmission.domain.member.entity.Member;
-import jakarta.persistence.Column;
+import finalmission.domain.time.entity.Time;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Reservation {
 
@@ -25,24 +25,19 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @Column(nullable = false)
-    private String lesson;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Lesson lesson;
 
-    @Column(nullable = false)
-    private LocalDate date;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Time time;
 
-    @Column(nullable = false)
-    private LocalTime time;
-
-    public Reservation(final Member member, final String lesson, final LocalDate date, final LocalTime time) {
+    public Reservation(final Member member, final Lesson lesson, final Time time) {
         this.member = member;
         this.lesson = lesson;
-        this.date = date;
         this.time = time;
     }
 
-    public void update(final LocalDate date, final LocalTime time) {
-        this.date = date;
+    public void changeTime(final Time time) {
         this.time = time;
     }
 }
