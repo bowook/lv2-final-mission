@@ -5,5 +5,6 @@ import java.util.List;
 
 public interface HolidayRepository {
 
+
     void saveHolidays(final List<Holiday> holidays);
 }
