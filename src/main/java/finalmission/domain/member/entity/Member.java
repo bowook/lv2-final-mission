@@ -1,15 +1,20 @@
 package finalmission.domain.member.entity;
 
-import jakarta.persistence.Column;
+import finalmission.domain.member.model.Email;
+import finalmission.domain.member.model.Name;
+import finalmission.domain.member.model.Password;
+import finalmission.domain.member.model.PhoneNumber;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
 
@@ -17,13 +22,21 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Embedded
+    private Email email;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    @Embedded
+    private Password password;
 
-    public Member(final String name, final String phoneNumber) {
+    @Embedded
+    private Name name;
+
+    @Embedded
+    private PhoneNumber phoneNumber;
+
+    public Member(final Email email, final Password password, final Name name, final PhoneNumber phoneNumber) {
+        this.email = email;
+        this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
