@@ -2,14 +2,14 @@ package finalmission.domain.reservation.repository;
 
 import finalmission.domain.member.entity.Member;
 import finalmission.domain.reservation.entity.Reservation;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository {
 
     Reservation save(final Reservation reservation);
+
+    void deleteByMemberAndId(final Member member, final Long id);
 
     void deleteById(final Long id);
 
@@ -19,5 +19,7 @@ public interface ReservationRepository {
 
     List<Reservation> findByMember(final Member member);
 
-    boolean existsByLessonAndDateAndTime(final String lesson, final LocalDate date, final LocalTime time);
+    Reservation findReservationByIdAndMember(final Long id, final Member member);
+
+    boolean existsReservationByLessonId(final Long lessonId);
 }

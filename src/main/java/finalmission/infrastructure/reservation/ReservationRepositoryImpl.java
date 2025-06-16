@@ -3,8 +3,6 @@ package finalmission.infrastructure.reservation;
 import finalmission.domain.member.entity.Member;
 import finalmission.domain.reservation.entity.Reservation;
 import finalmission.domain.reservation.repository.ReservationRepository;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +25,16 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
+    public void deleteByMemberAndId(final Member member, final Long id) {
+        repository.deleteByIdAndMember(id, member);
+    }
+
+    @Override
+    public Reservation findReservationByIdAndMember(final Long id, final Member member) {
+        return repository.findByIdAndMember(id, member);
+    }
+
+    @Override
     public List<Reservation> findAll() {
         return repository.findAll();
     }
@@ -42,7 +50,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public boolean existsByLessonAndDateAndTime(final String lesson, final LocalDate date, final LocalTime time) {
-        return repository.existsByLessonAndDateAndTime(lesson, date, time);
+    public boolean existsReservationByLessonId(final Long lessonId) {
+        return repository.existsReservationByLessonId(lessonId);
     }
 }
