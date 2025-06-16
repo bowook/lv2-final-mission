@@ -1,4 +1,4 @@
-package finalmission.presentation.dto;
+package finalmission.presentation.reservation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import finalmission.domain.reservation.entity.Reservation;
@@ -17,11 +17,11 @@ public record ReservationResponse(
     public static ReservationResponse from(final Reservation reservation) {
         return new ReservationResponse(
                 reservation.getId(),
-                reservation.getMember().getName(),
-                reservation.getMember().getPhoneNumber(),
-                reservation.getLesson(),
-                reservation.getDate(),
-                reservation.getTime()
+                reservation.getMember().getName().getValue(),
+                reservation.getMember().getPhoneNumber().getValue(),
+                reservation.getLesson().getName().getValue(),
+                reservation.getTime().getDate().getValue(),
+                reservation.getTime().getStartAt().getValue()
         );
     }
 }
