@@ -1,6 +1,8 @@
 package finalmission.application;
 
+import finalmission.domain.holiday.service.HolidayDomainService;
 import finalmission.domain.time.entity.Time;
+import finalmission.domain.time.exception.TimeNotAllowedException;
 import finalmission.domain.time.model.Date;
 import finalmission.domain.time.model.StartAt;
 import finalmission.domain.time.repository.TimeRepository;
@@ -14,11 +16,18 @@ import org.springframework.stereotype.Service;
 public class TimeService {
 
     private final TimeRepository repository;
+    private final HolidayDomainService holidayDomainService;
 
     public Time findTime(final LocalDate localDate, final LocalTime localTime) {
         final Date date = new Date(localDate);
         final StartAt startAt = new StartAt(localTime);
+        final Time time = repository.findByTime(date, startAt);
+        final boolean isHoliday = holidayDomainService.isHoliday(localDate);
 
-        return repository.findByTime(date, startAt);
+        if (isHoliday) {
+            throw new TimeNotAllowedException(localDate.toString());
+        }
+
+        return time;
     }
 }

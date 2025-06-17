@@ -57,21 +57,19 @@ public class ReservationFacade {
     @Transactional(readOnly = true)
     public List<ReservationResponse> getCurrentReservations() {
         final List<Reservation> reservations = reservationService.getCurrentSituations();
-        final List<ReservationResponse> responses = reservations.stream()
+
+        return reservations.stream()
                 .map(ReservationResponse::from)
                 .toList();
-
-        return responses;
     }
 
     @Transactional(readOnly = true)
     public List<ReservationResponse> getMyReservations(final Long memberId) {
         final Member member = memberService.findById(memberId);
         final List<Reservation> reservations = reservationService.getMemberReservations(member);
-        final List<ReservationResponse> responses = reservations.stream()
+
+        return reservations.stream()
                 .map(ReservationResponse::from)
                 .toList();
-
-        return responses;
     }
 }
