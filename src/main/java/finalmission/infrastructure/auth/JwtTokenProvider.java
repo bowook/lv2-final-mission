@@ -1,24 +1,18 @@
-package finalmission.domain.auth;
+package finalmission.infrastructure.auth;
 
+import finalmission.domain.auth.provider.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
-public class JwtTokenProvider {
+@RequiredArgsConstructor
+public class JwtTokenProvider implements TokenProvider {
 
     private final String secretKey;
     private final long validityInMilliseconds;
 
-    public JwtTokenProvider(
-            @Value("${security.jwt.token.secret-key}") String secretKey,
-            @Value("${security.jwt.token.expire-length}") long validityInMilliseconds) {
-        this.secretKey = secretKey;
-        this.validityInMilliseconds = validityInMilliseconds;
-    }
-
+    @Override
     public String createToken(final String payload) {
         final Claims claims = Jwts.claims().setSubject(payload);
         final Date now = new Date();
@@ -32,6 +26,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    @Override
     public String getPayload(final String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey)

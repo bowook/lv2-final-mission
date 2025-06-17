@@ -1,6 +1,8 @@
-package finalmission.domain.auth;
+package finalmission.presentation.resolver;
 
 import finalmission.domain.auth.exception.MissingTokenException;
+import finalmission.domain.auth.provider.TokenProvider;
+import finalmission.presentation.login.dto.LoginMember;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ public class LoginResolver implements HandlerMethodArgumentResolver {
 
     private static final String TOKEN_COOKIE_NAME = "token";
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
@@ -36,7 +38,7 @@ public class LoginResolver implements HandlerMethodArgumentResolver {
             throw new MissingTokenException("토큰이 존재하지 않습니다.");
         }
 
-        final String email = jwtTokenProvider.getPayload(token);
+        final String email = tokenProvider.getPayload(token);
         return new LoginMember(email);
     }
 

@@ -1,6 +1,6 @@
 package finalmission.application;
 
-import finalmission.domain.auth.JwtTokenProvider;
+import finalmission.domain.auth.provider.TokenProvider;
 import finalmission.domain.member.exception.MemberNotFoundException;
 import finalmission.domain.member.model.Email;
 import finalmission.domain.member.model.Password;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final MemberRepository repository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Transactional
     public String createToken(final String emailValue, final String passwordValue) {
@@ -23,7 +23,7 @@ public class AuthService {
 
         checkInvalidLogin(email, password);
 
-        return jwtTokenProvider.createToken(email.getValue());
+        return tokenProvider.createToken(email.getValue());
     }
 
     private void checkInvalidLogin(final Email email, final Password password) {

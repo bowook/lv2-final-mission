@@ -1,7 +1,7 @@
-package finalmission.domain.config;
+package finalmission.presentation.config;
 
-import finalmission.domain.auth.JwtTokenProvider;
-import finalmission.domain.auth.LoginResolver;
+import finalmission.domain.auth.provider.TokenProvider;
+import finalmission.presentation.resolver.LoginResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +12,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginResolver(jwtTokenProvider));
+        resolvers.add(new LoginResolver(tokenProvider));
     }
 }

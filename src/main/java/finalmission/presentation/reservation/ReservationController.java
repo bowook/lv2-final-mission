@@ -1,7 +1,7 @@
 package finalmission.presentation.reservation;
 
 import finalmission.application.ReservationFacade;
-import finalmission.domain.auth.LoginMember;
+import finalmission.presentation.login.dto.LoginMember;
 import finalmission.presentation.reservation.dto.ReservationRequest;
 import finalmission.presentation.reservation.dto.ReservationResponse;
 import finalmission.presentation.reservation.dto.ReservationUpdateRequest;

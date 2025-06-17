@@ -1,10 +1,10 @@
 package finalmission.application;
 
-import finalmission.domain.auth.LoginMember;
 import finalmission.domain.lesson.entity.Lesson;
 import finalmission.domain.member.entity.Member;
 import finalmission.domain.reservation.entity.Reservation;
 import finalmission.domain.time.entity.Time;
+import finalmission.presentation.login.dto.LoginMember;
 import finalmission.presentation.reservation.dto.ReservationRequest;
 import finalmission.presentation.reservation.dto.ReservationResponse;
 import finalmission.presentation.reservation.dto.ReservationUpdateRequest;
