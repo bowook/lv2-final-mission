@@ -1,6 +1,8 @@
 package finalmission.application;
 
+import finalmission.domain.auth.exception.AccessDeniedException;
 import finalmission.domain.auth.provider.TokenProvider;
+import finalmission.domain.member.entity.Member;
 import finalmission.domain.member.exception.MemberNotFoundException;
 import finalmission.domain.member.model.Email;
 import finalmission.domain.member.model.Password;
@@ -24,6 +26,16 @@ public class AuthService {
         checkInvalidLogin(email, password);
 
         return tokenProvider.createToken(email.getValue());
+    }
+
+    @Transactional(readOnly = true)
+    public void validateAdminByToken(final String token) {
+        final Email email = new Email(tokenProvider.getPayload(token));
+        final Member member = repository.findByEmail(email);
+
+        if (member.isNotAdmin()) {
+            throw new AccessDeniedException("관리자만 접근 가능합니다.");
+        }
     }
 
     private void checkInvalidLogin(final Email email, final Password password) {

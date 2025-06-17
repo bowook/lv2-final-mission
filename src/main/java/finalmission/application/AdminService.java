@@ -8,14 +8,16 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class HolidayService {
+public class AdminService {
 
     private final HolidayProvider provider;
     private final HolidayRepository repository;
 
+    @Transactional
     public void saveHoliday() {
         final HolidayResponses responses = provider.generate();
         final List<Holiday> holidays = parseHolidays(responses);
@@ -38,5 +40,4 @@ public class HolidayService {
                 .map(Holiday::new)
                 .toList();
     }
-
 }
