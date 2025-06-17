@@ -1,4 +1,4 @@
-package finalmission.domain.auth.exception;
+package finalmission.presentation.exception;
 
 import finalmission.infrastructure.exception.AuthenticationException;
 
