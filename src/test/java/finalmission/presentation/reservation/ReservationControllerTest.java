@@ -19,23 +19,30 @@ public class ReservationControllerTest {
 
     private String memberToken;
 
-    private Map<String, Object> params;
+    private Map<String, Object> validParams;
+    private Map<String, Object> invalidParams;
 
     @BeforeEach
     void setUp() {
         // given
-        params = createReservationRequestJsonMap(
+        validParams = createReservationRequestJsonMap(
                 "우가",
                 "010-4874-3424",
                 "하체운동",
                 LocalDate.of(2025, 6, 13),
                 LocalTime.of(14, 30)
         );
+        invalidParams = createReservationRequestJsonMap(
+                "우가",
+                "010-4874-3424",
+                "하체운동",
+                LocalDate.of(2025, 6, 6),
+                LocalTime.of(14, 30)
+        );
 
-        memberToken = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(Map.of("email", "wooga@email.com", "password", "password"))
-                .when().post("/login").getCookie("token");
+        memberToken = generateToken("wooga@email.com");
+        final String adminToken = generateToken("admin@email.com");
+        generateHoliday(adminToken);
     }
 
     @Test
@@ -43,10 +50,21 @@ public class ReservationControllerTest {
         // when & then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .body(params)
+                .body(validParams)
                 .when().post("/reservations")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 예약_생성_요청시_공휴일이면_생성_실패() {
+        // when & then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(invalidParams)
+                .when().post("/reservations")
+                .then().log().all()
+                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 
     @Test
@@ -54,7 +72,7 @@ public class ReservationControllerTest {
         // given
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .body(params)
+                .body(validParams)
                 .when().post("/reservations")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
@@ -74,7 +92,7 @@ public class ReservationControllerTest {
         // given
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .body(params)
+                .body(validParams)
                 .when().post("/reservations")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
@@ -96,7 +114,7 @@ public class ReservationControllerTest {
         // given
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .body(params)
+                .body(validParams)
                 .when().post("/reservations")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
@@ -127,7 +145,7 @@ public class ReservationControllerTest {
         // given
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .body(params)
+                .body(validParams)
                 .when().post("/reservations")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
@@ -144,6 +162,22 @@ public class ReservationControllerTest {
                 .body("id", is(1))
                 .body("date", is(LocalDate.of(2025, 6, 12).toString()))
                 .body("time", is(LocalTime.of(18, 0).toString()));
+    }
+
+    private String generateToken(final String email) {
+        return RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(Map.of("email", email, "password", "password"))
+                .when().post("/login").getCookie("token");
+    }
+
+    private void generateHoliday(final String adminToken) {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", adminToken)
+                .when().post("/admin")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
     }
 
     private Map<String, Object> updateReservationRequestJsonMap(
