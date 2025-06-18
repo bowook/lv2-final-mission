@@ -32,7 +32,7 @@ public class AdminServiceTest {
             return new FakeHolidayGenerator();
         }
 
-        @Bean
+        @Bean(name = "fakeHolidayRepositoryInAdminServiceTest")
         public HolidayRepository fakeHolidayRepository() {
             return new FakeHolidayRepository();
         }

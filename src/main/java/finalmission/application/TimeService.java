@@ -19,15 +19,14 @@ public class TimeService {
     private final HolidayDomainService holidayDomainService;
 
     public Time findTime(final LocalDate localDate, final LocalTime localTime) {
-        final Date date = new Date(localDate);
-        final StartAt startAt = new StartAt(localTime);
-        final Time time = repository.findByTime(date, startAt);
         final boolean isHoliday = holidayDomainService.isHoliday(localDate);
-
         if (isHoliday) {
             throw new TimeNotAllowedException(localDate.toString());
         }
 
-        return time;
+        final Date date = new Date(localDate);
+        final StartAt startAt = new StartAt(localTime);
+
+        return repository.findByTime(date, startAt);
     }
 }

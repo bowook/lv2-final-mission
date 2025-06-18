@@ -11,7 +11,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class FakeHolidayRepository implements HolidayRepository {
 
     private final Map<Long, Holiday> database = new HashMap<>();
-    private final AtomicLong id = new AtomicLong();
+    private final AtomicLong id = new AtomicLong(1);
+
+    public FakeHolidayRepository() {
+        final Holiday initialHoliday = new Holiday(LocalDate.of(2025, 6, 6));
+        database.put(id.getAndIncrement(), initialHoliday);
+    }
 
     @Override
     public void saveHolidays(final List<Holiday> holidays) {
