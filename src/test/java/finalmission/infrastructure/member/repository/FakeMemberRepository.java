@@ -33,8 +33,7 @@ public class FakeMemberRepository implements MemberRepository {
     public Member findByNameAndPhoneNumber(final Name name, final PhoneNumber phoneNumber) {
         return database.values()
                 .stream()
-                .filter(member -> member.getName().getValue().equals(name.getValue())
-                        && member.getPhoneNumber().getValue().equals(phoneNumber.getValue()))
+                .filter(member -> member.getName().equals(name) && member.getPhoneNumber().equals(phoneNumber))
                 .findFirst()
                 .orElseThrow();
     }
@@ -48,7 +47,7 @@ public class FakeMemberRepository implements MemberRepository {
     public Member findByEmail(final Email email) {
         return database.values()
                 .stream()
-                .filter(member -> member.getEmail().getValue().equals(email.getValue()))
+                .filter(member -> member.getEmail().equals(email))
                 .findFirst()
                 .orElseThrow();
     }
@@ -57,7 +56,6 @@ public class FakeMemberRepository implements MemberRepository {
     public boolean existsByEmailAndPassword(final Email email, final Password password) {
         return database.values()
                 .stream()
-                .anyMatch(member -> member.getEmail().getValue().equals(email.getValue())
-                        && member.getPassword().getValue().equals(password.getValue()));
+                .anyMatch(member -> member.getEmail().equals(email) && member.getPassword().equals(password));
     }
 }
