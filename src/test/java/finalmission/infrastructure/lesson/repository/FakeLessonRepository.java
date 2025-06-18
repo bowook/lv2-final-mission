@@ -14,16 +14,6 @@ public class FakeLessonRepository implements LessonRepository {
     );
 
     @Override
-    public Lesson save(final Lesson lesson) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(final Long id) {
-
-    }
-
-    @Override
     public Lesson findByName(final Name name) {
         return database.values()
                 .stream()

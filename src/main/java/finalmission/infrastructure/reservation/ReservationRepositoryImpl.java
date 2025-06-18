@@ -4,7 +4,6 @@ import finalmission.domain.member.entity.Member;
 import finalmission.domain.reservation.entity.Reservation;
 import finalmission.domain.reservation.repository.ReservationRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,11 +16,6 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public Reservation save(final Reservation reservation) {
         return repository.save(reservation);
-    }
-
-    @Override
-    public void deleteById(final Long id) {
-        repository.deleteById(id);
     }
 
     @Override
@@ -40,17 +34,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Optional<Reservation> findById(final Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
     public List<Reservation> findByMember(final Member member) {
         return repository.findByMember(member);
-    }
-
-    @Override
-    public boolean existsReservationByLessonId(final Long lessonId) {
-        return repository.existsReservationByLessonId(lessonId);
     }
 }

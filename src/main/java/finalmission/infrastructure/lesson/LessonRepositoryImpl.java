@@ -16,14 +16,4 @@ public class LessonRepositoryImpl implements LessonRepository {
     public Lesson findByName(final Name name) {
         return repository.findByName(name);
     }
-
-    @Override
-    public void deleteById(final Long id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public Lesson save(final Lesson lesson) {
-        return repository.save(lesson);
-    }
 }

@@ -3,7 +3,6 @@ package finalmission.application;
 import finalmission.domain.lesson.entity.Lesson;
 import finalmission.domain.member.entity.Member;
 import finalmission.domain.reservation.entity.Reservation;
-import finalmission.domain.reservation.exception.ReservationNotFoundException;
 import finalmission.domain.reservation.repository.ReservationRepository;
 import finalmission.domain.time.entity.Time;
 import java.util.List;
@@ -18,11 +17,7 @@ public class ReservationService {
 
     private final ReservationRepository repository;
 
-    public Reservation create(
-            final Member member,
-            final Lesson lesson,
-            final Time time
-    ) {
+    public Reservation create(final Member member, final Lesson lesson, final Time time) {
         final Reservation reservation = new Reservation(member, lesson, time);
 
         return repository.save(reservation);
@@ -37,11 +32,6 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public boolean existsReservation(final Long lessonId) {
-        return repository.existsReservationByLessonId(lessonId);
-    }
-
-    @Transactional(readOnly = true)
     public List<Reservation> getCurrentSituations() {
         return repository.findAll();
     }
@@ -49,12 +39,6 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public List<Reservation> getMemberReservations(final Member member) {
         return repository.findByMember(member);
-    }
-
-    @Transactional(readOnly = true)
-    public Reservation findReservation(final Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ReservationNotFoundException("일치하는 예약이 존재하지 않습니다."));
     }
 
     @Transactional(readOnly = true)
