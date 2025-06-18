@@ -17,6 +17,13 @@ public class PhoneNumber {
     private String value;
 
     public PhoneNumber(final String value) {
+        validateBlank(value);
         this.value = value;
+    }
+
+    private void validateBlank(final String value) {
+        if (value.isBlank()) {
+            throw new IllegalArgumentException("전화번호에 빈 값은 허용되지 않습니다.");
+        }
     }
 }

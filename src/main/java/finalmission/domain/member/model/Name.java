@@ -17,6 +17,13 @@ public class Name {
     private String value;
 
     public Name(final String value) {
+        validateBlank(value);
         this.value = value;
+    }
+
+    private void validateBlank(final String value) {
+        if (value.isBlank()) {
+            throw new IllegalArgumentException("회원 이름에는 빈 값이 허용되지 않습니다.");
+        }
     }
 }
